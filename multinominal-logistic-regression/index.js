@@ -6,7 +6,7 @@ const _ = require("lodash");
 const mnist = require("mnist-data");
 
 function loadData() {
-  const mnistData = mnist.training(0, 10000);
+  const mnistData = mnist.training(0, 60000);
 
   const features = mnistData.images.values.map((image) => _.flatMap(image));
   const encodedLabels = mnistData.labels.values.map((label) => {
@@ -22,13 +22,13 @@ const { features, labels } = loadData();
 
 const regression = new LogisticRegression(features, labels, {
   learningRate: 1,
-  iterations: 5,
-  batchSize: 100,
+  iterations: 80,
+  batchSize: 500,
 });
 
 regression.train();
 
-const testMnistData = mnist.testing(0, 1000);
+const testMnistData = mnist.testing(0, 10000);
 const testFeatures = testMnistData.images.values.map((image) =>
   _.flatMap(image)
 );
@@ -44,4 +44,3 @@ console.log("Accuracy is", accuracy);
 plot({
   x: regression.costHistory.reverse(),
 });
-console.log(regression.costHistory);
